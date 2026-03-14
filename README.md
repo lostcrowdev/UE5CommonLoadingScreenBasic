@@ -37,11 +37,11 @@ The original Common Loading Screen plugin is tightly coupled to Lyra's game syst
 
 ### 1. Copy the plugin
 
-Copy the Plugins/CommonLoadingScreen folder into your project's Plugins directory.
+Copy the Plugins/CommonLoadingScreenSimple folder into your project's Plugins directory.
 
 ### 2. Enable the plugin
 
-Open your project, go to Plugins and enable Common Loading Screen.
+Open your project, go to Plugins and enable Common Loading Screen Simple.
 
 ### 3. Assign a loading screen widget
 
