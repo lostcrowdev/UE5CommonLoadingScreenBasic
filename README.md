@@ -1,4 +1,4 @@
-# UE5LoadingScreen
+# UE5 Common Loading Screen - Simple
 
 A standalone Unreal Engine plugin based on the Common Loading Screen system from Epic's Lyra Starter Game. This plugin strips out Lyra-specific dependencies and provides a clean, reusable loading screen solution for any UE5 project.
 
@@ -6,7 +6,7 @@ A standalone Unreal Engine plugin based on the Common Loading Screen system from
 
 The original Common Loading Screen plugin is tightly coupled to Lyra's game systems (Experience system, Developer Settings, Primary Asset pipeline). This project decouples it into a standalone plugin that can be dropped into any project without Lyra as a dependency.
 
-### What Was Grabbed From Lyra
+### What Was Taken From Lyra
 
 - CommonLoadingScreen plugin source (LoadingScreenManager, LoadingProcessTask, CommonLoadingScreenSettings, startup screen)
 - LyraLobbyBackground — the actor placed in a level that triggers the loading screen and streams in a background world
@@ -14,7 +14,7 @@ The original Common Loading Screen plugin is tightly coupled to Lyra's game syst
 - LyraLoadingScreenSubsystem — a game instance subsystem from LyraGame/UI/Foundation that tracks the current loading screen widget class and broadcasts changes across map transitions
 - Loading screen widgets (W_LoadingScreen_Host, W_LoadingScreen_Default_Content, W_LoadingScreenReasonDebugText, etc.)
 
-### What Was Changed From Lyra
+### What Changed From Lyra
 
 - Removed LyraDeveloperSettings dependency entirely
 - Removed ShouldSkipDirectlyToGameplay, ShouldLoadCosmeticBackgrounds, and CanPlayerBotsAttack functions which relied on Lyra-specific editor settings
@@ -28,7 +28,7 @@ The original Common Loading Screen plugin is tightly coupled to Lyra's game syst
 
 ## Requirements
 
-- Unreal Engine 5.7.4
+- Unreal Engine 5.7.4 (earlier version might work but are untested)
 - Visual Studio 2022
 
 ---
