@@ -1,5 +1,7 @@
 # UE5 Common Loading Screen - Simple
 
+![LoadingScreenPreview](LoadingScreenPreview.png)
+
 A standalone Unreal Engine plugin based on the Common Loading Screen system from Epic's Lyra Starter Game. This plugin strips out Lyra-specific dependencies and provides a clean, reusable loading screen solution for any UE5 project.
 
 ## Overview
