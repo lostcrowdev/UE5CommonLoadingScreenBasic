@@ -7,7 +7,7 @@
 
 #include "LoadingProcessTask.generated.h"
 
-#define UE_API COMMONLOADINGSCREENSIMPLE_API
+#define UE_API COMMONLOADINGSCREENBASIC_API
 
 struct FFrame;
 

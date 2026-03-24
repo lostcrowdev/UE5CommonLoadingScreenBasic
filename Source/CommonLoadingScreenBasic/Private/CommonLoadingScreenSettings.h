@@ -46,6 +46,12 @@ public:
  	UPROPERTY(config, EditAnywhere, Category=Configuration, meta=(ForceUnits=s))
 	float LogLoadingScreenHeartbeatInterval = 5.0f;
 
+	// The text displayed (and logged) while the loading screen is being held up for texture streaming.
+	// Use {0} as the placeholder for the number of seconds remaining.
+	// Example: "Texture streaming hold ({0}s remaining)"
+	UPROPERTY(config, EditAnywhere, Category=Display)
+	FText TextureStreamingHoldText = INVTEXT("Texture streaming hold ({0}s remaining)");
+
 	// When true, the reason the loading screen is shown or hidden will be printed to the log every frame.
 	UPROPERTY(Transient, EditAnywhere, Category=Debugging, meta=(ConsoleVariable="CommonLoadingScreen.LogLoadingScreenReasonEveryFrame"))
 	bool LogLoadingScreenReasonEveryFrame = 0;
@@ -64,4 +70,3 @@ public:
 	UPROPERTY(config, EditAnywhere, Category=Configuration)
 	bool ForceTickLoadingScreenEvenInEditor = true;
 };
-

@@ -23,15 +23,15 @@ class ULyraLoadingScreenSubsystem : public UGameInstanceSubsystem
 	GENERATED_BODY()
 
 public:
-	COMMONLOADINGSCREENSIMPLE_API ULyraLoadingScreenSubsystem();
+	COMMONLOADINGSCREENBASIC_API ULyraLoadingScreenSubsystem();
 
 	// Sets the loading screen widget class to display inside of the loading screen widget host
 	UFUNCTION(BlueprintCallable)
-	COMMONLOADINGSCREENSIMPLE_API void SetLoadingScreenContentWidget(TSubclassOf<UUserWidget> NewWidgetClass);
+	COMMONLOADINGSCREENBASIC_API void SetLoadingScreenContentWidget(TSubclassOf<UUserWidget> NewWidgetClass);
 
 	// Returns the last set loading screen widget class to display inside of the loading screen widget host
 	UFUNCTION(BlueprintPure)
-	COMMONLOADINGSCREENSIMPLE_API TSubclassOf<UUserWidget> GetLoadingScreenContentWidget() const;
+	COMMONLOADINGSCREENBASIC_API TSubclassOf<UUserWidget> GetLoadingScreenContentWidget() const;
 
 private:
 	UPROPERTY(BlueprintAssignable, meta=(AllowPrivateAccess))

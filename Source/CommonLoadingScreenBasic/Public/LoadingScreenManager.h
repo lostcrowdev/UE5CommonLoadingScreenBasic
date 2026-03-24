@@ -8,7 +8,7 @@
 
 #include "LoadingScreenManager.generated.h"
 
-#define UE_API COMMONLOADINGSCREENSIMPLE_API
+#define UE_API COMMONLOADINGSCREENBASIC_API
 
 template <typename InterfaceType> class TScriptInterface;
 
@@ -20,6 +20,14 @@ class UObject;
 class UWorld;
 struct FFrame;
 struct FWorldContext;
+
+/**
+ * Dynamic multicast delegate broadcast when the loading screen is shown or hidden.
+ * bIsVisible is true when the screen appears and false when it is fully removed
+ * (including after the texture-streaming hold has expired).
+ * Bind to this from Blueprint instead of calling Remove from Parent on the widget.
+ */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLoadingScreenVisibilityChangedBPDelegate, bool, bIsVisible);
 
 /**
  * Handles showing/hiding the loading screen
@@ -50,13 +58,42 @@ public:
 		return DebugReasonForShowingOrHidingLoadingScreen;
 	}
 
-	/** Returns True when the loading screen is currently being shown */
+	/** Returns true when the loading screen is currently being shown */
+	UFUNCTION(BlueprintCallable, Category=LoadingScreen)
 	bool GetLoadingScreenDisplayStatus() const
 	{
 		return bCurrentlyShowingLoadingScreen;
 	}
 
-	/** Called when the loading screen visibility changes  */
+	/**
+	 * Call this from Blueprint once your splash screens have finished playing.
+	 * The loading screen will not show until this has been called, allowing
+	 * splash screens to play first in packaged builds without being interrupted.
+	 * After the first call, subsequent map loads work normally without needing
+	 * to call this again.
+	 */
+	UFUNCTION(BlueprintCallable, Category=LoadingScreen)
+	UE_API void AllowLoadingScreen();
+
+	/** Returns true if the loading screen is currently allowed to show */
+	UFUNCTION(BlueprintCallable, Category=LoadingScreen)
+	UE_API bool IsLoadingScreenAllowed() const { return bLoadingScreenAllowed; }
+
+	/**
+	 * Blueprint-assignable delegate fired whenever the loading screen visibility changes.
+	 * bIsVisible=true  → the loading screen widget has just been added to the viewport.
+	 * bIsVisible=false → the loading screen widget has been fully removed from the viewport,
+	 *                    including after the texture-streaming hold delay has expired.
+	 *
+	 * Bind to this event from Blueprint (e.g. in your HUD or GameMode) and react to
+	 * bIsVisible=false here instead of calling Remove from Parent on W_LoadingScreen_Host.
+	 * The C++ manager owns the widget lifecycle; driving removal from Blueprint will race
+	 * against the streaming hold and leave orphaned widgets on screen.
+	 */
+	UPROPERTY(BlueprintAssignable, Category=LoadingScreen)
+	FOnLoadingScreenVisibilityChangedBPDelegate OnLoadingScreenVisibilityChanged;
+
+	/** Called when the loading screen visibility changes (C++ observers) */
 	DECLARE_MULTICAST_DELEGATE_OneParam(FOnLoadingScreenVisibilityChangedDelegate, bool);
 	FORCEINLINE FOnLoadingScreenVisibilityChangedDelegate& OnLoadingScreenVisibilityChangedDelegate() { return LoadingScreenVisibilityChanged; }
 
@@ -97,7 +134,7 @@ private:
 	UE_API void ChangePerformanceSettings(bool bEnabingLoadingScreen);
 
 private:
-	/** Delegate broadcast when the loading screen visibility changes */
+	/** Delegate broadcast when the loading screen visibility changes (C++ only) */
 	FOnLoadingScreenVisibilityChangedDelegate LoadingScreenVisibilityChanged;
 
 	/** A reference to the loading screen widget we are displaying (if any) */
@@ -129,6 +166,20 @@ private:
 
 	/** True when the loading screen is currently being shown */
 	bool bCurrentlyShowingLoadingScreen = false;
+
+	/**
+	 * Suppresses the loading screen until AllowLoadingScreen() is called from Blueprint.
+	 * This allows splash screens to play first in packaged builds.
+	 * Defaults to false so the loading screen is held off on startup.
+	 */
+	bool bLoadingScreenAllowed = false;
+
+	/**
+	 * Set to true after AllowLoadingScreen() has been called once.
+	 * Subsequent map loads bypass the suppression check so normal
+	 * in-game loading screens work without needing to call AllowLoadingScreen() again.
+	 */
+	bool bHasCompletedInitialStartup = false;
 };
 
 #undef UE_API

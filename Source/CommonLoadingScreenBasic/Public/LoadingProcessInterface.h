@@ -7,7 +7,7 @@
 
 #include "LoadingProcessInterface.generated.h"
 
-#define UE_API COMMONLOADINGSCREENSIMPLE_API
+#define UE_API COMMONLOADINGSCREENBASIC_API
 
 /** Interface for things that might cause loading to happen which requires a loading screen to be displayed */
 UINTERFACE(MinimalAPI, BlueprintType)

@@ -198,6 +198,13 @@ void ULoadingScreenManager::UnregisterLoadingProcessor(TScriptInterface<ILoading
 	ExternalLoadingProcessors.Remove(Interface.GetObject());
 }
 
+void ULoadingScreenManager::AllowLoadingScreen()
+{
+	UE_LOG(LogLoadingScreen, Log, TEXT("[ALLOW] Loading screen unlocked — splash screens complete"));
+	bLoadingScreenAllowed = true;
+	bHasCompletedInitialStartup = true;
+}
+
 void ULoadingScreenManager::HandlePreLoadMap(const FWorldContext& WorldContext, const FString& MapName)
 {
 	if (WorldContext.OwningGameInstance == GetGameInstance())
@@ -407,6 +414,16 @@ bool ULoadingScreenManager::CheckForAnyNeedToShowLoadingScreen()
 
 bool ULoadingScreenManager::ShouldShowLoadingScreen()
 {
+	// If we haven't completed initial startup yet, hold off entirely so that
+	// splash screens can play first. AllowLoadingScreen() must be called from
+	// Blueprint once splash screens are done. After that, bHasCompletedInitialStartup
+	// stays true so subsequent map loads are never suppressed.
+	if (!bLoadingScreenAllowed && !bHasCompletedInitialStartup)
+	{
+		DebugReasonForShowingOrHidingLoadingScreen = TEXT("Waiting for splash screens to finish");
+		return false;
+	}
+
 	const UCommonLoadingScreenSettings* Settings = GetDefault<UCommonLoadingScreenSettings>();
 
 	// Check debugging commands that force the state one way or another
@@ -457,7 +474,12 @@ bool ULoadingScreenManager::ShouldShowLoadingScreen()
 			UGameViewportClient* GameViewportClient = GetGameInstance()->GetGameViewportClient();
 			GameViewportClient->bDisableWorldRendering = false;
 
-			DebugReasonForShowingOrHidingLoadingScreen = FString::Printf(TEXT("Texture streaming hold (%.2fs remaining)"), HoldLoadingScreenAdditionalSecs - TimeSinceScreenDismissed);
+			const double SecondsRemaining = HoldLoadingScreenAdditionalSecs - TimeSinceScreenDismissed;
+			DebugReasonForShowingOrHidingLoadingScreen = FText::Format(
+				Settings->TextureStreamingHoldText,
+				FText::AsNumber(SecondsRemaining)
+			).ToString();
+
 			bWantToForceShowLoadingScreen = true;
 		}
 	}

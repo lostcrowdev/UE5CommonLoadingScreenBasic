@@ -7,7 +7,7 @@
 #include "LyraLobbyBackground.generated.h"
 
 UCLASS()
-class COMMONLOADINGSCREENSIMPLE_API ALyraLobbyBackground : public AActor
+class COMMONLOADINGSCREENBASIC_API ALyraLobbyBackground : public AActor
 {
 	GENERATED_BODY()
 

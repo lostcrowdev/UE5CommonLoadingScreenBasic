@@ -59,4 +59,4 @@ bool FCommonStartupLoadingScreenModule::IsGameModule() const
 
 #undef LOCTEXT_NAMESPACE
 	
-IMPLEMENT_MODULE(FCommonStartupLoadingScreenModule, CommonStartupLoadingScreenSimple)
+IMPLEMENT_MODULE(FCommonStartupLoadingScreenModule, CommonStartupLoadingScreenBasic)

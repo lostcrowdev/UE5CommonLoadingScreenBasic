@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class CommonLoadingScreenSimple : ModuleRules
+public class CommonLoadingScreenBasic : ModuleRules
 {
-	public CommonLoadingScreenSimple(ReadOnlyTargetRules Target) : base(Target)
+	public CommonLoadingScreenBasic(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		
