@@ -38,25 +38,22 @@ Go to Project Settings > Game > Common Loading Screen and assign W_LoadingScreen
 
 Without this step the loading screen will fall back to a blank placeholder.
 
-### 4. Update Game Instance
-Go to Edit > Project Settings > Maps & Modes > Game Instance Class > set it to your a custom Game Instance. The default UE Game Instance doesn't appear to have persistent with bools, etc... 
+### 4. Create or Update Game Instance
+Go to Edit > Project Settings > Maps & Modes > Game Instance Class > set it to a custom Game Instance. The default UE Game Instance doesn't appear to have persistence variables.
 
-Note: A custom game instance callec BP_LoadingScreenGameInstance is included in the plugin.
+### 5. Set Up Levels
+It's probably best to copy and paste the plugin example levels into your own project directory, then make sure to set Game Default Map to SplashScreen. If you copy the example levels, make sure to rename them and update references in the Blueprints, and update redirector references.
 
-### 5. Place the background actor
-
+### 6. Place the background actor
 Add BP_LobbyBackground to your frontend map. Select it and set the Background Level property in the Details panel to the world you want streamed in as the background during loading.
 
-### 6. Place the main menu actor
-
+### 7. Place the main menu actor
 Add BP_MainMenu to your frontend map. Select it in the editor and edit the Level Name property to the level you want to load when the player clicks Play. Defaults to Level001. You can easily modify the code to use your own main menu widget.
 
-### 7. Modify Widget Blueprints
-
+### 8. Modify Widget Blueprints
 In the plugin directory, modify W_LoadingScreen_DefaultContent, W_LoadingScreen_Host, W_LoadingScreenReasonDebugText, W_Logo_LoadingScreen as well as W_MainMenu, W_SplashScreenDeveloperLogo, and W_SplashScreenUnrealEngine to suite your game. 
 
-### 8. Configure Splash Screens
-
+### 9. Configure Splash Screens
 Select BP_LobbyBackground to optionally enable or disable splash screens (when the game loads), and how long they should be displayed. Included Epic's official Unreal Engine splash screen hero logo for convenience.
 
 Replace the image in W_SplashScreenDeveloperLogo with your game company logo.
